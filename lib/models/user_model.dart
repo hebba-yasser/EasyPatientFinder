@@ -8,7 +8,6 @@ class userModel{
   String ?role;
   String ? image;
   String ? uId;
-  bool ?emailVerified;
 
   userModel({
     this.name,
@@ -18,7 +17,6 @@ class userModel{
     this.role,
     this.image,
     this.uId,
-    this.emailVerified,
 });
   userModel.fromjson(Map<String,dynamic>json){
     name=json['name'];
@@ -28,7 +26,6 @@ class userModel{
     image=json['image'];
     email=json['email'];
     uId=json['uId'];
-    emailVerified=json['emailVerified'];
 
   }
   Map<String,dynamic>  tomap(){
@@ -40,7 +37,6 @@ class userModel{
     'image':image,
     'email':email,
       'uId':uId,
-      'emailVerified' :emailVerified
     };
 
   }

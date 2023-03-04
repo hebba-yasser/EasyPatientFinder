@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icon_broken/icon_broken.dart';
 import 'package:project/layout/student/Layout_screen.dart';
 import 'package:project/layout/supervisor/supervisor_layout.dart';
+import 'package:project/modules/loginscreen/forget_password.dart';
 import 'package:project/modules/registerscreen/registerScreen.dart';
 import 'package:project/shared/network/local/cache_helper.dart';
 import 'package:project/shared/styles/colors.dart';
@@ -196,7 +197,7 @@ class loginScreen extends StatelessWidget {
                                         hidepassword:
                                             logincubit.get(context).hidepass,
                                       ),TextButton(onPressed: () {
-
+                                        navigateto(context, forgetPasswordScreen());
                                       }, child: Text('Forget your password ?'),),
                                       SizedBox(
                                         height: 5,

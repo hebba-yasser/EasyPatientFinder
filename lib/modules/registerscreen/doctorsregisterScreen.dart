@@ -39,6 +39,7 @@ class doctorRegisterScreen extends StatelessWidget {
         }},
         builder: (context, state) {
           return Scaffold(
+
             body: Container(
               color: defaultcol,
               child: Column(
@@ -46,24 +47,36 @@ class doctorRegisterScreen extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(10),
                       color: defaultcol,
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            'Register ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: ()
+                                {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                  IconBroken.Arrow___Left_2,color: Colors.white,
+                                ),
+                              ),
+
+                              Text(
+                                'Register ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+
                         ],
                       ),
                     ),
