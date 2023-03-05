@@ -23,12 +23,13 @@ class registerScreen extends StatelessWidget {
       create: (BuildContext context) => registercubit(),
       child: BlocConsumer<registercubit, registerstates>(
         listener: (context, state) {
-      if(state  is createUserSucessState){
-       showtoast(
-        text:  'Registration completed successfully',
-             state: toaststates.SUCCESS);
-      navigate(context, loginScreen());
-        }},
+          if (state is createUserSucessState) {
+            showtoast(
+                text: 'Registration completed successfully',
+                state: toaststates.SUCCESS);
+            navigate(context, loginScreen());
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             body: Container(
@@ -48,15 +49,14 @@ class registerScreen extends StatelessWidget {
                           Row(
                             children: [
                               IconButton(
-                                onPressed: ()
-                                {
+                                onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 icon: Icon(
-                                  IconBroken.Arrow___Left_2,color: Colors.white,
+                                  IconBroken.Arrow___Left_2,
+                                  color: Colors.white,
                                 ),
                               ),
-
                               Text(
                                 'Register ',
                                 style: TextStyle(
@@ -67,7 +67,6 @@ class registerScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -100,6 +99,7 @@ class registerScreen extends StatelessWidget {
                                       defaulttextformfield(
                                         controller: Idcon,
                                         radius: 30,
+                                        maxLength: 4,
                                         keyboardtype: TextInputType.number,
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -107,7 +107,7 @@ class registerScreen extends StatelessWidget {
                                           }
                                         },
                                         label: 'Student Id',
-                                        prefix:Icons.numbers_outlined,
+                                        prefix: Icons.numbers_outlined,
                                       ),
                                       SizedBox(
                                         height: 15,
@@ -115,6 +115,7 @@ class registerScreen extends StatelessWidget {
                                       defaulttextformfield(
                                         controller: namecon,
                                         radius: 30,
+                                        maxLength: 30,
                                         keyboardtype: TextInputType.name,
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -130,6 +131,7 @@ class registerScreen extends StatelessWidget {
                                       defaulttextformfield(
                                         controller: phonecon,
                                         radius: 30,
+                                        maxLength: 11,
                                         keyboardtype: TextInputType.phone,
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -137,7 +139,7 @@ class registerScreen extends StatelessWidget {
                                           }
                                         },
                                         label: 'phone number',
-                                        prefix:IconBroken.Call,
+                                        prefix: IconBroken.Call,
                                       ),
                                       SizedBox(
                                         height: 15,
@@ -167,6 +169,10 @@ class registerScreen extends StatelessWidget {
                                           if (value!.isEmpty) {
                                             return 'please enter your  password';
                                           }
+                                          if (value.length<4) {
+                                            return 'Password must be greater than six characters';
+                                          }
+
                                         },
                                         label: 'Password',
                                         prefix: IconBroken.Password,
@@ -178,24 +184,30 @@ class registerScreen extends StatelessWidget {
                                         hidepassword:
                                             registercubit.get(context).hidepass,
                                       ),
-                                      SizedBox(height: 15,),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
                                       SizedBox(
                                         height: 5,
                                       ),
                                       ConditionalBuilder(
-                                       condition: state is ! registerLoadingState,
+                                        condition:
+                                            state is! registerLoadingState,
                                         builder: (context) => defaultbutton(
                                           onpress: () {
-                                            if (formkey.currentState!.validate()) {
-                                              registercubit.get(context).userRegister(
-                                                name: namecon.text,
-                                                email: emailcon.text,
-                                                password: passwordcon.text,
-                                                phone: phonecon.text,
-                                                studentId: Idcon.text,
-                                                role: 'student',
+                                            if (formkey.currentState!
+                                                .validate()) {
+                                              registercubit
+                                                  .get(context)
+                                                  .userRegister(
+                                                    name: namecon.text,
+                                                    email: emailcon.text,
+                                                    password: passwordcon.text,
+                                                    phone: phonecon.text,
+                                                    studentId: Idcon.text,
 
-                                              );
+                                            role: 'student',
+                                                  );
                                             }
                                           },
                                           text: 'sign up',

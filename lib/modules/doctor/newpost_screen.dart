@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,10 +48,10 @@ class newPostScreen extends StatelessWidget {
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure8-1.png',
   ];
 
-  bool ?isDiabetes=false;
-  bool? isHypertension=false;
-  bool? isCardiac=false;
-  bool? isAllergies=false;
+  bool isDiabetes=false;
+  bool isHypertension=false;
+  bool isCardiac=false;
+  bool isAllergies=false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class newPostScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar:AppBar(
-              title: Text('New Post',),
+              title: Text('New Case',),
               actions: [
                 defaultTextButton(
                 onpress: () {  }, text: ' post',size: 15,
@@ -80,8 +83,7 @@ class newPostScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 25.0,
                         backgroundImage: NetworkImage(
-                          'https://media.istockphoto.com/id/138205019/photo/happy-healthcare-practitioner.jpg?s=612x612&w=0&k=20&c=b8kUyVtmZeW8MeLHcDsJfqqF0XiFBjq6tgBQZC7G0f0=',
-                        ),
+                            'https://media.istockphoto.com/id/1298261537/vector/blank-man-profile-head-icon-placeholder.jpg?s=612x612&w=0&k=20&c=CeT1RVWZzQDay4t54ookMaFsdi7ZHVFg2Y5v7hxigCA='                        ),
                       ),
                       SizedBox(
                         width: 15.0,
@@ -219,6 +221,14 @@ class newPostScreen extends StatelessWidget {
                               Text('Hypertension'),
                             ],
                           ),
+                       ConditionalBuilder(condition: isAllergies, builder: (context) =>  TextFormField(
+                         // controller: textController,
+                           keyboardType: TextInputType.text,
+                           decoration: InputDecoration(
+                             hintText: 'Allergies ',
+                             border: InputBorder.none,
+                           )), fallback: (context) =>SizedBox() ),
+
                           TextFormField(
                             // controller: textController,
                               keyboardType: TextInputType.text,

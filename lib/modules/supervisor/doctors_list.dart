@@ -1,6 +1,8 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project/models/user_model.dart';
 import 'package:project/modules/supervisor/posts_perDoctor_screen.dart';
 
 import '../../layout/supervisor/supervisorcubit/cubit.dart';
@@ -13,35 +15,38 @@ class doctorsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => supervisorLayoutcubit(),
-      child: BlocConsumer<supervisorLayoutcubit, supervisorLayoutstates>(
-        listener: (context, state) {},
+    return BlocConsumer<supervisorLayoutcubit, supervisorLayoutstates>(
+        listener: (context, state) {
+        },
         builder: (context, state)
         {
-
+            var   cubit=supervisorLayoutcubit.get(context).doctors;
           return Scaffold(
             appBar: AppBar(
               title: Text(
                 'Doctors List',
               ),),
-            body: ListView.separated(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) => buildRequestItem(context),
-              separatorBuilder: (context, index) => SizedBox(
-                height: 8.0,
+            body: ConditionalBuilder(
+              condition:state is !supervisorGetAllDoctorsLoadingState ,
+              builder: (context) =>  ListView.separated(
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) => buildRequestItem(cubit[index],context),
+                separatorBuilder: (context, index) => SizedBox(
+                  height: 8.0,
+                ),
+                itemCount: cubit.length,
               ),
-              itemCount: 5,
+              fallback:(context) => Center(child: CircularProgressIndicator()),
+
             ),
           );
 
 
         },
-      ),
-    );
+      );
   }
-  Widget buildRequestItem(context){
+  Widget buildRequestItem(userModel modell ,context){
     return  Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -60,9 +65,7 @@ class doctorsScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 35.0,
-                        backgroundImage: NetworkImage(
-                          'https://media.istockphoto.com/id/138205019/photo/happy-healthcare-practitioner.jpg?s=612x612&w=0&k=20&c=b8kUyVtmZeW8MeLHcDsJfqqF0XiFBjq6tgBQZC7G0f0=',
-                        ),
+                        backgroundImage: NetworkImage('${modell.image}'  ),
                       ),
                       SizedBox(
                         width: 10.0,
@@ -76,7 +79,7 @@ class doctorsScreen extends StatelessWidget {
                                 height: 5,
                               ),
                               Text(
-                                'ahmed mahmoud',
+                                '${modell.name}',
                                 style: TextStyle(
                                   height: 1.4,
                                   fontSize: 15,

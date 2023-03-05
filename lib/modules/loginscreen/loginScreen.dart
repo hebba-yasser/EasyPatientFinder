@@ -31,7 +31,7 @@ class loginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is loginErrorState) {
             showtoast(
-              text: state.error,
+              text: 'The email address or password that you have entered doesn\'t match any account ',
               state: toaststates.ERROR,
             );
           }
@@ -206,8 +206,7 @@ class loginScreen extends StatelessWidget {
                                         condition: state is ! loginLoadingState,
                                         builder: (context) => defaultbutton(
                                           onpress: () {
-                                            if (formkey.currentState!
-                                                .validate()) {
+                                            if (formkey.currentState!.validate()) {
                                              logincubit.get(context).userLogin(
                                                  email: emailcon.text,
                                                  password: passwordcon.text);
@@ -221,7 +220,7 @@ class loginScreen extends StatelessWidget {
                                           child: CircularProgressIndicator(),
                                         ),
                                       ),SizedBox(
-                                        height: 5,
+                                        height: 10,
                                       ),
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.center,

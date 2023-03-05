@@ -1,8 +1,11 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:icon_broken/icon_broken.dart';
 import 'package:project/modules/doctor/post_screen.dart';
+import 'package:project/shared/styles/colors.dart';
 import '../../layout/student/studentcubit/cubit.dart';
 import '../../layout/student/studentcubit/states.dart';
 import '../../shared/components/components.dart';
@@ -13,8 +16,8 @@ class doctorHomeScreen extends StatelessWidget {
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/5-Figure4-1.png',
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure5-1.png',
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure6-1.png',
-   'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure7-1.png',
-  'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure8-1.png',
+    'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure7-1.png',
+    'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure8-1.png',
   ];
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,6 @@ class doctorHomeScreen extends StatelessWidget {
                   },
                   icon: Icon(IconBroken.Search),
                 ),
-
               ]),
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -70,6 +72,7 @@ class doctorHomeScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -119,14 +122,79 @@ class doctorHomeScreen extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                 ),
-                Text(
-                  'The patient was a 77-year-old edentulous male whose chief complaint was instability of his complete dentures. At his initial examination, he clearly showed mandibular prognathism and imbalanced occlusion when wearing complete dentures.',
-                  style: Theme.of(context).textTheme.subtitle1,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
                 SizedBox(
                   height: 10,
+                ),
+                /* rowItmes(text1:'Patient name: ', text2: 'mohamed magdy ',maxline: 2,overflow: TextOverflow.ellipsis,),
+                SizedBox(
+                  height: 7,
+                ),
+            rowItmes(text1:'Patient age: ', text2: '33 ',overflow: TextOverflow.ellipsis,maxline: 2),
+                SizedBox(
+                  height: 7,
+                ),
+               rowItmes(text1:'Patient gender: ', text2: 'male ',maxline: 2,overflow: TextOverflow.ellipsis,),
+                SizedBox(
+                  height: 7,
+                ),
+              rowItmes(text1:'Patient address: ', text2: 'mdfklnfladnaernkjvnnnnnnnnnnnajjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjnv ',
+                    maxline: 2,overflow: TextOverflow.ellipsis,),
+                SizedBox(
+                  height: 7,
+                ),
+                */
+                Text(
+                  'Medical history:'
+                  ,style: TextStyle(color: HexColor('#5394AD'),
+                    fontSize: 15),
+                ),
+                ConditionalBuilder(
+                    condition: true, builder: (context) =>Text('diabetes') , fallback: (context) =>SizedBox() ),
+                ConditionalBuilder(
+                    condition: true, builder: (context) =>Text('cardiac problems') , fallback: (context) =>SizedBox() ),
+                ConditionalBuilder(
+                    condition: true, builder: (context) =>Text('hypertension') , fallback: (context) =>SizedBox() ),
+                SizedBox(
+                  height: 5,
+                ),
+                ConditionalBuilder(
+                    condition: true, builder: (context) => rowItmes(
+                  text1: 'List of allergies:   ',
+                  text2: 'nfejknvrinavkjnvajnv ajnkj',
+                  maxline: 2,
+                  overflow: TextOverflow.ellipsis,
+                ), fallback: (context) =>SizedBox() ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'Diagnosis :'
+                      ,style: TextStyle(color: HexColor('#5394AD'),
+                fontSize: 15),
+                ),
+                ConditionalBuilder(
+                    condition: true, builder: (context) =>Text('category') , fallback: (context) =>SizedBox() ),
+                ConditionalBuilder(
+                    condition: true, builder: (context) =>Text('sub') , fallback: (context) =>SizedBox() ),   rowItmes(
+                  text1: 'Current medications: ',
+                  text2: 'maefegewagrrearaggle ',
+                  maxline: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+
+                SizedBox(
+                  height: 7,
+                ),
+
+                ConditionalBuilder(
+                    condition: true, builder: (context) => rowItmes(
+                  text1: 'Other notes : ',
+                  text2: '... ',
+                  maxline: 2,
+                  overflow: TextOverflow.ellipsis,
+                ), fallback: (context) =>SizedBox() ),
+                SizedBox(
+                  height: 7,
                 ),
                 Container(
                   height: 300,
@@ -137,17 +205,46 @@ class doctorHomeScreen extends StatelessWidget {
                     ),
                   ),
                   child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                    ),
-                    itemCount: getcount(),
-                    itemBuilder: (context, index) {
-                      if (_items.length > 4) {
-                        if (index < 3) {
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemCount: getcount(),
+                      itemBuilder: (context, index) {
+                        if (_items.length > 4) {
+                          if (index < 3) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(_items[index]),
+                                ),
+                              ),
+                            );
+                          }
+                          if (index == 3) {
+                            return Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.network(_items[3], fit: BoxFit.cover),
+                                Positioned.fill(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    color: Colors.black54,
+                                    child: Text(
+                                      '+${(_items.length) - 4}',
+                                      style: TextStyle(
+                                          fontSize: 32, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        } else {
                           return Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -157,39 +254,7 @@ class doctorHomeScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        if (index == 3) {
-                          return Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.network(_items[3], fit: BoxFit.cover),
-                              Positioned.fill(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: Colors.black54,
-                                  child: Text(
-                                    '+${(_items.length) - 4}',
-                                    style: TextStyle(
-                                        fontSize: 32, color: Colors.white),
-                                  ),
-                                ),
-                              ),
-
-                            ],
-                          );
-                        }
-                      }
-                      else{
-                        return Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(_items[index]),
-                            ),
-                          ),
-                        );
-                      }
-                    }
-                  ),
+                      }),
                 ),
                 SizedBox(
                   height: 10,

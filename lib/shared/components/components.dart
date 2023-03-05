@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:icon_broken/icon_broken.dart';
 
 import '../styles/colors.dart';
@@ -60,12 +61,16 @@ Widget defaulttextformfield({
   Color bordercolor = Colors.black,
    IconData? prefix,
   IconData ? suffix,
+  int?maxLength,
+
   void Function()? onpress,
   void Function()?  suffixPressed,
 
 }) =>
     TextFormField(
         controller: controller,
+        maxLength:maxLength ,
+
         keyboardType: keyboardtype,
         onFieldSubmitted: onsubmit,
         onChanged: onshange,
@@ -75,6 +80,7 @@ Widget defaulttextformfield({
         decoration: InputDecoration(
           //  hintText:'Email',
             labelText: label,
+            counterText: '',
             labelStyle: TextStyle(
               color: labelcolor,
             ),
@@ -112,6 +118,30 @@ PreferredSizeWidget? defaultAppBar({
     title!,
   ),
   actions: actions,
+);
+Widget rowItmes({
+required String text1,
+  required String text2,
+   int? maxline,
+  TextOverflow overflow=TextOverflow.visible,
+})=>    RichText(
+maxLines: maxline,
+
+overflow: overflow,
+text: TextSpan(
+children: <TextSpan>[
+TextSpan(
+text: text1,
+style: TextStyle(
+color: HexColor('#5394AD'),
+  fontSize: 15
+),
+),
+TextSpan(
+text:text2,
+style: TextStyle(color: Colors.black)),
+],
+),
 );
 void navigateto (context,widget)=> Navigator.push(
   context,

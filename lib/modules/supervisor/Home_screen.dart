@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:icon_broken/icon_broken.dart';
 import 'package:project/modules/student/post_screen.dart';
 import 'package:project/modules/supervisor/post_screen.dart';
@@ -80,6 +81,7 @@ class supervisorHomeScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -130,13 +132,65 @@ class supervisorHomeScreen extends StatelessWidget {
               ),
             ),
             Text(
-              'The patient was a 77-year-old edentulous male whose chief complaint was instability of his complete dentures. At his initial examination, he clearly showed mandibular prognathism and imbalanced occlusion when wearing complete dentures.',
-              style: Theme.of(context).textTheme.subtitle1,
-              maxLines: 3,
-              overflow:TextOverflow.ellipsis,
+              'Medical history:'
+              ,style: TextStyle(color: HexColor('#5394AD'),
+                fontSize: 15),
             ),
+            ConditionalBuilder(
+                condition: true, builder: (context) =>Text('diabetes') , fallback: (context) =>SizedBox() ),
+            ConditionalBuilder(
+                condition: true, builder: (context) =>Text('cardiac problems') , fallback: (context) =>SizedBox() ),
+            ConditionalBuilder(
+                condition: true, builder: (context) =>Text('hypertension') , fallback: (context) =>SizedBox() ),
             SizedBox(
-              height: 10,
+              height: 5,
+            ),
+            ConditionalBuilder(
+                condition: true, builder: (context) => rowItmes(
+              text1: 'List of allergies:',
+              text2: 'nfejknvrinavkjnvajnv ajnkj',
+              maxline: 2,
+              overflow: TextOverflow.ellipsis,
+            ), fallback: (context) =>SizedBox() ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              'Diagnosis :'
+              ,style: TextStyle(color: HexColor('#5394AD'),
+                fontSize: 15),
+            ),
+            ConditionalBuilder(
+                condition: true, builder: (context) =>Text('category') , fallback: (context) =>SizedBox() ),
+            ConditionalBuilder(
+                condition: true, builder: (context) =>Text('sub') , fallback: (context) =>SizedBox() ),   rowItmes(
+              text1: 'Current medications: ',
+              text2: 'maefegewagrrearaggle ',
+              maxline: 2,
+              overflow: TextOverflow.ellipsis,
+            ), SizedBox(
+              height: 7,
+            ),
+            rowItmes(
+              text1: 'Level: ',
+              text2: '... ',
+              maxline: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            SizedBox(
+              height: 7,
+            ),
+
+            ConditionalBuilder(
+                condition: true, builder: (context) => rowItmes(
+              text1: 'Other notes : ',
+              text2: '... ',
+              maxline: 2,
+              overflow: TextOverflow.ellipsis,
+            ), fallback: (context) =>SizedBox() ),
+            SizedBox(
+              height: 7,
             ),
             Container(
               height: 300,

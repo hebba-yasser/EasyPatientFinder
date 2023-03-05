@@ -109,6 +109,7 @@ class doctorRegisterScreen extends StatelessWidget {
                                       defaulttextformfield(
                                         controller: namecon,
                                         radius: 30,
+                                        maxLength: 30,
                                         keyboardtype: TextInputType.name,
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -124,6 +125,7 @@ class doctorRegisterScreen extends StatelessWidget {
                                       defaulttextformfield(
                                         controller: phonecon,
                                         radius: 30,
+                                        maxLength: 11,
                                         keyboardtype: TextInputType.phone,
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -160,6 +162,8 @@ class doctorRegisterScreen extends StatelessWidget {
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'please enter your  password';
+                                          } if (value.length<4) {
+                                            return 'Password must be greater than six characters';
                                           }
                                         },
                                         label: 'Password',
@@ -231,7 +235,8 @@ class doctorRegisterScreen extends StatelessWidget {
                                                     password: passwordcon.text,
                                                     phone: phonecon.text,
                                                     role: doctorrole,
-                                                  );
+
+                                              );
                                             }
                                           },
                                           text: 'sign up',

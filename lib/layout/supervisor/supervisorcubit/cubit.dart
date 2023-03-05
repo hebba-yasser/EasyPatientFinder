@@ -38,20 +38,21 @@ userModel ?model;
        emit(supervisorGetuserErrorState(error.toString()));
      });
    }
-}
-  // File postImage;
+   List<QueryDocumentSnapshot<Object?>> db =[];
+   List<userModel> doctors =[];
+   void getAllDoctors() {
+     emit( supervisorGetAllDoctorsLoadingState());
+     FirebaseFirestore.instance
+         .collection('users')
+         .where('role', isEqualTo: 'Doctor')
+         .get()
+         .then((QuerySnapshot querySnapshot) {
 
-   /*Future<void> getPostImage() async {
-     final pickedFile = await picker.getImage(
-       source: ImageSource.gallery,
-     );
-
-     if (pickedFile != null) {
-       postImage = File(pickedFile.path);
-     //  emit(SocialPostImagePickedSuccessState());
-     } else {
-       print('No image selected.');
-     //  emit(SocialPostImagePickedErrorState());
-     }
+         doctors=querySnapshot.docs.map((e)=>
+         userModel.fromjson(e.data() as Map<String,dynamic>)).toList();
+         emit( supervisorGetAllDoctorsSucessState());
+     }).catchError((error){
+       emit( supervisorGetAllDoctorsErrorState(error.toString()));
+     });
    }
-}*/
+}

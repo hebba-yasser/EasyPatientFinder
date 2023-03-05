@@ -1,6 +1,8 @@
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../../shared/components/components.dart';
 
@@ -71,6 +73,7 @@ class doctorPostScreen extends StatelessWidget {
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -82,15 +85,65 @@ class doctorPostScreen extends StatelessWidget {
                             color: Colors.grey[300],
                           ),
                         ),
-                        Text(
-                          'The patient was a 77-year-old edentulous male whose chief complaint was instability of his complete dentures. At his initial examination, he clearly showed mandibular prognathism and imbalanced occlusion when wearing complete dentures.',
-                          style: Theme.of(context).textTheme.subtitle1,
-
-                        ),
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
+                        rowItmes(text1:'Patient name : ', text2: 'mohamed magdy ',),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        rowItmes(text1:'Patient age : ', text2: '33 ',),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        rowItmes(text1:'Patient gender : ', text2: 'male ',),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        rowItmes(text1:'Current medications : ', text2: 'maefegewagrrearaggle ',),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Text(
+                          'Medical history :'
+                          ,style: TextStyle(color: HexColor('#5394AD'),
+                            fontSize: 15),
+                        ),
+                        ConditionalBuilder(
+                            condition: true, builder: (context) =>Text('diabetes') , fallback: (context) =>SizedBox() ),
+                        ConditionalBuilder(
+                            condition: true, builder: (context) =>Text('cardiac problems') , fallback: (context) =>SizedBox() ),
+                        ConditionalBuilder(
+                            condition: true, builder: (context) =>Text('hypertension') , fallback: (context) =>SizedBox() ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        ConditionalBuilder(
+                            condition: true, builder: (context) => rowItmes(
+                          text1: 'List of allergies : ',
+                          text2: 'nfejknvrinavkjnvajnv ajnkj',
+                          maxline: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ), fallback: (context) =>SizedBox() ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Text(
+                          'Diagnosis :'
+                          ,style: TextStyle(color: HexColor('#5394AD'),
+                            fontSize: 15),
+                        ),
+                        ConditionalBuilder(
+                            condition: true, builder: (context) =>Text('category') , fallback: (context) =>SizedBox() ),
+                        ConditionalBuilder(
+                            condition: true, builder: (context) =>Text('sub') , fallback: (context) =>SizedBox() ),
+                        rowItmes( text1: 'Level : ',  text2: '... ',),
+
+                        ConditionalBuilder(
+                            condition: true, builder: (context) =>Text('Other notes :') , fallback: (context) =>SizedBox() ),
+                        SizedBox(
+                          height: 7,
+                        ),     Container(
                           height: 350,
                           decoration: BoxDecoration(
                           ),

@@ -47,7 +47,7 @@ class doctorLayoutScreen extends StatelessWidget {
 
               BottomNavigationBarItem(
                 icon: Icon( IconBroken.Paper),
-                label: 'new post',
+                label: 'new Case',
               ),
               BottomNavigationBarItem(
                 icon: Icon( IconBroken.Profile),
