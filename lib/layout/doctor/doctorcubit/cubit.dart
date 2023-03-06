@@ -89,7 +89,9 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
       email: email,
       name: name,
       phone: phone,
+      studentId:  doctormodel?.studentId,
       image: image ?? doctormodel?.image,
+      role: doctormodel?.role,
       uId: doctormodel?.uId,
     );
 

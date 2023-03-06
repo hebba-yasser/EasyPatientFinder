@@ -194,26 +194,13 @@ class doctorProfileScreen extends StatelessWidget {
                       padding: EdgeInsets.all(20),
                       color: defaultcol,
                       width: double.infinity,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 70,),
-                          ConditionalBuilder(
-                            fallback: (context) =>
-                               Stack(
-                            alignment: AlignmentDirectional.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 68.0,
-                                backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                  radius: 64.0,
-                                  backgroundImage: AssetImage('images/profileimage.jpg'),
-                                ),
-                              ),
-                            ],
-                          ),
-                            condition:  userModel?.image!=null ,
-                            builder: (context) =>  Stack(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 70,),
+                            ConditionalBuilder(
+                              fallback: (context) =>
+                                 Stack(
                               alignment: AlignmentDirectional.center,
                               children: [
                                 CircleAvatar(
@@ -221,25 +208,40 @@ class doctorProfileScreen extends StatelessWidget {
                                   backgroundColor: Colors.white,
                                   child: CircleAvatar(
                                     radius: 64.0,
-                                    backgroundImage: NetworkImage(
-
-                                      '${userModel?.image}',
-                                    ),
+                                    backgroundImage: AssetImage('images/profileimage.jpg'),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          SizedBox(height: 5,),
-                          Text(
-                            '${userModel?.name}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:  Colors.white,
-                              fontSize: 18,
+                              condition:  userModel?.image!=null ,
+                              builder: (context) =>  Stack(
+                                alignment: AlignmentDirectional.center,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 68.0,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                      radius: 64.0,
+                                      backgroundImage: NetworkImage(
+
+                                        '${userModel?.image}',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ), SizedBox(height: 5,),
-                        ],
+                            SizedBox(height: 5,),
+                            Text(
+                              '${userModel?.name}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color:  Colors.white,
+                                fontSize: 18,
+                              ),
+                            ), SizedBox(height: 5,),
+                          ],
+                        ),
                       ),
                     ),
                   ),

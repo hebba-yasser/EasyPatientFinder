@@ -225,7 +225,8 @@ class doctorEditProfileScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var userModel = doctorLayoutcubit.get(context).doctormodel;
-        var doctorProfileImage = doctorLayoutcubit.get(context).doctorProfileImage;
+        var doctorProfileImage =
+            doctorLayoutcubit.get(context).doctorProfileImage;
         namecon.text = userModel!.name!;
         phonecon.text = userModel!.phone!;
         emailcon.text = userModel!.email!;
@@ -272,22 +273,42 @@ class doctorEditProfileScreen extends StatelessWidget {
                         children: [
                           // SizedBox(height: 70,),
                           ConditionalBuilder(
-                            fallback: (context) =>
-                                Stack(
-                                  alignment: AlignmentDirectional.center,
-                                  children: [
-                                    CircleAvatar(
-                                      radius:54.0,
-                                      backgroundColor: Colors.white,
-                                      child: CircleAvatar(
-                                        radius: 50.0,
-                                        backgroundImage: AssetImage('images/profileimage.jpg'),
-                                      ),
-                                    ),
-                                  ],
+                            condition: userModel?.image != null,
+                            fallback: (context) => Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              SizedBox(
+                                height: 3,
+                              ),
+                              CircleAvatar(
+                                radius: 54.0,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                  radius: 50.0,
+                                  backgroundImage: doctorProfileImage == null
+                                      ?   AssetImage('images/profileimage.jpg')
+                                      : FileImage(doctorProfileImage)
+                                  as ImageProvider,
                                 ),
-                            condition:  userModel?.image!=null ,
-                            builder: (context) =>     Stack(
+                              ),
+                              IconButton(
+                                icon: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 20.0,
+                                  child: Icon(
+                                    IconBroken.Camera,
+                                    size: 16.0,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  doctorLayoutcubit
+                                      .get(context)
+                                      .getDoctorImage();
+                                },
+                              ),
+                            ],
+                          ),
+                            builder: (context) => Stack(
                               alignment: Alignment.bottomRight,
                               children: [
                                 SizedBox(
@@ -301,7 +322,7 @@ class doctorEditProfileScreen extends StatelessWidget {
                                     backgroundImage: doctorProfileImage == null
                                         ? NetworkImage('${userModel?.image}')
                                         : FileImage(doctorProfileImage)
-                                    as ImageProvider,
+                                            as ImageProvider,
                                   ),
                                 ),
                                 IconButton(
@@ -321,40 +342,6 @@ class doctorEditProfileScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),
-                          Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              SizedBox(
-                                height: 3,
-                              ),
-                              CircleAvatar(
-                                radius: 54.0,
-                                backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                  radius: 50.0,
-                                  backgroundImage: doctorProfileImage == null
-                                      ? NetworkImage('${userModel?.image}')
-                                      : FileImage(doctorProfileImage)
-                                        as ImageProvider,
-                                ),
-                              ),
-                              IconButton(
-                                icon: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 20.0,
-                                  child: Icon(
-                                    IconBroken.Camera,
-                                    size: 16.0,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  doctorLayoutcubit
-                                      .get(context)
-                                      .getDoctorImage();
-                                },
-                              ),
-                            ],
                           ),
                         ],
                       ),
@@ -385,10 +372,15 @@ class doctorEditProfileScreen extends StatelessWidget {
                                   Expanded(
                                     child: Column(
                                       children: [
-                                        if (doctorLayoutcubit.get(context).doctorProfileImage != null)
+                                        if (doctorLayoutcubit
+                                                .get(context)
+                                                .doctorProfileImage !=
+                                            null)
                                           defaultbutton(
                                             onpress: () {
-                                              doctorLayoutcubit.get(context).uploadDoctorProfileImage(
+                                              doctorLayoutcubit
+                                                  .get(context)
+                                                  .uploadDoctorProfileImage(
                                                       name: namecon.text,
                                                       phone: phonecon.text,
                                                       email: emailcon.text);
@@ -399,7 +391,6 @@ class doctorEditProfileScreen extends StatelessWidget {
                                         SizedBox(
                                           height: 5.0,
                                         ),
-
                                         if (state is doctorUpdateLoadingState)
                                           LinearProgressIndicator(),
                                       ],
