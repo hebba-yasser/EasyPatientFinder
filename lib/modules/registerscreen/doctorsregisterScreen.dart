@@ -162,7 +162,7 @@ class doctorRegisterScreen extends StatelessWidget {
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'please enter your  password';
-                                          } if (value.length<4) {
+                                          } if (value.length<6) {
                                             return 'Password must be greater than six characters';
                                           }
                                         },

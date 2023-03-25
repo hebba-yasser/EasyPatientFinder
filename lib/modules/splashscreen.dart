@@ -2,6 +2,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project/layout/doctor/doctor_Layout_screen.dart';
 import 'package:project/layout/supervisor/supervisor_layout.dart';
 import 'package:project/modules/loginscreen/loginScreen.dart';
@@ -46,7 +47,6 @@ class splashScreen extends StatelessWidget {
 
  Widget  getwidget() {
 
-
    print('role is $ROLE');
    print('uid is $UID');
    if(UID != null && ROLE != null ){
@@ -68,4 +68,5 @@ class splashScreen extends StatelessWidget {
     throw('there is an error look at splash screen');
 
   }
+
 }

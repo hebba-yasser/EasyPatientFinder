@@ -29,6 +29,7 @@ class registerScreen extends StatelessWidget {
                 state: toaststates.SUCCESS);
             navigate(context, loginScreen());
           }
+
         },
         builder: (context, state) {
           return Scaffold(
@@ -169,7 +170,7 @@ class registerScreen extends StatelessWidget {
                                           if (value!.isEmpty) {
                                             return 'please enter your  password';
                                           }
-                                          if (value.length<4) {
+                                          if (value.length<6) {
                                             return 'Password must be greater than six characters';
                                           }
 
@@ -195,11 +196,8 @@ class registerScreen extends StatelessWidget {
                                             state is! registerLoadingState,
                                         builder: (context) => defaultbutton(
                                           onpress: () {
-                                            if (formkey.currentState!
-                                                .validate()) {
-                                              registercubit
-                                                  .get(context)
-                                                  .userRegister(
+                                            if (formkey.currentState!.validate()) {
+                                              registercubit .get(context).userRegister(
                                                     name: namecon.text,
                                                     email: emailcon.text,
                                                     password: passwordcon.text,
