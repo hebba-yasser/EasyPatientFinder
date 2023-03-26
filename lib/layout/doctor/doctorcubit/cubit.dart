@@ -146,11 +146,18 @@ import 'package:project/shared/components/constants.dart';
 import '../../../models/case_model.dart';
 import '../../../models/user_model.dart';
 import '../../../shared/components/components.dart';
+import '../../../shared/components/constants.dart';
+import '../../../shared/components/constants.dart';
+import '../../../shared/components/constants.dart';
 
 class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
 
 
   doctorLayoutcubit() :super (intialstate());
+
+
+
+
 
   static doctorLayoutcubit get(context) => BlocProvider.of(context);
 
@@ -309,8 +316,8 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
   }
 
 
-
-  void uploadPostImage({
+late String globalcaseid;
+  void uploadCaseImage({
     // required String uId,
     // required String name,
     // required String image,
@@ -330,17 +337,16 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
     required String category,
     required String subCategory,
     required String level,
-
   }){
     emit(doctorNewPostLoadingState());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .child('cases/${Uri.file(postImage!.path).pathSegments.last}')
         .putFile(postImage!)
-        .then((value) {
-      value.ref.getDownloadURL().then((value) {
+        .then((value1) {
+      value1.ref.getDownloadURL().then((value) {
         print(value);
-        createPost(
+        createCase(
             dateTime: dateTime,
             patientName: patientName,
             patientAge: patientAge,
@@ -357,8 +363,10 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
             category: category,
             subCategory: subCategory,
             level: level,
-
-            images: value);
+            images: value,
+            caseId :'',
+            caseState:'WAITING',
+           );
       }).catchError((error) {
         emit(doctorNewPostErrorState(error));
       });
@@ -367,7 +375,7 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
     });
   }
 
-  void createPost({
+  void createCase({
     // required String name,
     // required String uId,
     // required String image,
@@ -388,6 +396,7 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
     required String subCategory,
     required String level,
     required String images,
+  required String caseId, required String caseState,
   }) {
     caseModel model = caseModel(
       uId: doctormodel?.uId,
@@ -410,15 +419,24 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
       subCategory: subCategory,
       level: level,
       images: images??'',
-
+      caseId: caseId,
+        caseState:caseState,
 
     );
-
-
     FirebaseFirestore.instance
-        .collection('posts')
+        .collection('cases')
         .add(model.tomap())
         .then((value) {
+      FirebaseFirestore.instance
+          .collection('cases')
+          .doc(value.id)
+          .update({'caseId': '${value.id}'})
+          .then((value) {
+            print('add post id ');
+            emit(doctorUpdateCasesSucessState());
+      }).catchError((error) {
+        emit(doctorUpdateCasesErrorState(error));
+      });
       emit(doctorNewPostSucessState());
     }).catchError((error) {
       emit(doctorNewPostErrorState(error));
@@ -460,9 +478,43 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
     emit(changeAllergiesSuccess());
     return isAllergies;
     }
+  List<caseModel> cases = [];
+
+  void getCases()
+  {
+    FirebaseFirestore.instance
+        .collection('cases')
+        .get()
+        .then((value)
+    {
+      value.docs.forEach((element)
+      {
+        cases.add(caseModel.fromjson(element.data()));
+      });
+
+      emit(doctorGetCasesSucessState());
+    })
+        .catchError((error){
+      emit(doctorGetCasesErrorState(error.toString()));
+    });
+  }
+  caseModel? clickcase ;
+  void getCase( String uidpost) {
+    emit(doctorGetuserLoadingState());
+    FirebaseFirestore.instance.collection('cases').doc(uidpost).get().then((value) {
+      print(value.data());
+      clickcase = caseModel.fromjson(value.data()!);
+      emit(doctorGetClickedCaseSucessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(doctorGetClickedCaseErrorState(error.toString()));
+    });
+  }
+  }
 
 
-}
+
+
 /*
   void createNewPost({
     required String uId,

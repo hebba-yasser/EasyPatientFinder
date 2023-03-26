@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:icon_broken/icon_broken.dart';
+import 'package:project/layout/doctor/doctorcubit/cubit.dart';
+import 'package:project/layout/doctor/doctorcubit/states.dart';
+import 'package:project/models/case_model.dart';
 import 'package:project/modules/doctor/post_screen.dart';
 import 'package:project/shared/styles/colors.dart';
 import '../../layout/student/studentcubit/cubit.dart';
@@ -12,19 +15,21 @@ import '../../shared/components/components.dart';
 import '../../shared/components/constants.dart';
 
 class doctorHomeScreen extends StatelessWidget {
-  List _items = [
+  List _items = [/*
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/5-Figure4-1.png',
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure5-1.png',
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure6-1.png',
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure7-1.png',
     'https://d3i71xaburhd42.cloudfront.net/bd1dda091dc895f3f2dfee27bedb5beed39bfc53/250px/6-Figure8-1.png',
-  ];
+  */];
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<studentLayoutcubit, studentLayoutstates>(
+    return BlocConsumer<doctorLayoutcubit, doctorLayoutstates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return Scaffold(
+        return ConditionalBuilder(
+          condition: doctorLayoutcubit.get(context).cases.length>0,
+          builder: (context) => Scaffold(
           appBar: AppBar(
               title: Text(
                 'Home',
@@ -43,24 +48,28 @@ class doctorHomeScreen extends StatelessWidget {
               ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) => buildPost(context),
+                itemBuilder: (context, index) => buildPost(doctorLayoutcubit.get(context).cases[index],context),
                 separatorBuilder: (context, index) => SizedBox(
                   height: 8.0,
                 ),
-                itemCount: 5,
+                itemCount:doctorLayoutcubit.get(context).cases.length ,
               ),
               SizedBox(
                 height: 8.0,
               ),
             ]),
           ),
+        ),
+          fallback:(context) => Center(child: CircularProgressIndicator()),
+
         );
       },
     );
   }
 
-  Widget buildPost(context) => InkWell(
+  Widget buildPost( caseModel model,context) => InkWell(
         onTap: () {
+          doctorLayoutcubit.get(context).getCase(model.caseId as String);
           navigateto(context, doctorPostScreen());
         },
         child: Card(
@@ -78,9 +87,7 @@ class doctorHomeScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 20.0,
-                      backgroundImage: NetworkImage(
-                        'https://media.istockphoto.com/id/138205019/photo/happy-healthcare-practitioner.jpg?s=612x612&w=0&k=20&c=b8kUyVtmZeW8MeLHcDsJfqqF0XiFBjq6tgBQZC7G0f0=',
-                      ),
+                backgroundImage: NetworkImage('${model.image}'),
                     ),
                     SizedBox(
                       width: 15.0,
@@ -90,7 +97,7 @@ class doctorHomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'ahmed mahmoud',
+                      ' ${model.name}',
                             style: TextStyle(
                               height: 1.4,
                               fontSize: 15,
@@ -101,7 +108,7 @@ class doctorHomeScreen extends StatelessWidget {
                             width: 5.0,
                           ),
                           Text(
-                            'february 20, 2023 at 11:00 pm',
+                            ' ${model.dateTime}',
                             style:
                                 Theme.of(context).textTheme.caption?.copyWith(
                                       height: 1.4,
@@ -149,18 +156,18 @@ class doctorHomeScreen extends StatelessWidget {
                     fontSize: 15),
                 ),
                 ConditionalBuilder(
-                    condition: true, builder: (context) =>Text('diabetes') , fallback: (context) =>SizedBox() ),
+                    condition: model.isDiabetes  as bool, builder: (context) =>Text('diabetes') , fallback: (context) =>SizedBox() ),
                 ConditionalBuilder(
-                    condition: true, builder: (context) =>Text('cardiac problems') , fallback: (context) =>SizedBox() ),
+                    condition: model.isCardiac  as bool, builder: (context) =>Text('cardiac problems') , fallback: (context) =>SizedBox() ),
                 ConditionalBuilder(
-                    condition: true, builder: (context) =>Text('hypertension') , fallback: (context) =>SizedBox() ),
+                    condition: model.isHypertension  as bool, builder: (context) =>Text('hypertension') , fallback: (context) =>SizedBox() ),
                 SizedBox(
                   height: 5,
                 ),
                 ConditionalBuilder(
-                    condition: true, builder: (context) => rowItmes(
+                    condition: model.isAllergies  as bool, builder: (context) => rowItmes(
                   text1: 'List of allergies:   ',
-                  text2: 'nfejknvrinavkjnvajnv ajnkj',
+                  text2: '${model.allergies}',
                   maxline: 2,
                   overflow: TextOverflow.ellipsis,
                 ), fallback: (context) =>SizedBox() ),
@@ -173,11 +180,12 @@ class doctorHomeScreen extends StatelessWidget {
                 fontSize: 15),
                 ),
                 ConditionalBuilder(
-                    condition: true, builder: (context) =>Text('category') , fallback: (context) =>SizedBox() ),
+                    condition: model.category!.length>0, builder: (context) =>Text('${model. category}',) , fallback: (context) =>SizedBox() ),
                 ConditionalBuilder(
-                    condition: true, builder: (context) =>Text('sub') , fallback: (context) =>SizedBox() ),   rowItmes(
+                    condition: model.subCategory!.length>0, builder: (context) =>Text('${model.subCategory}',) , fallback: (context) =>SizedBox() ),
+                rowItmes(
                   text1: 'Current medications: ',
-                  text2: 'maefegewagrrearaggle ',
+                  text2: '${model.currentMedications}',
                   maxline: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -187,9 +195,9 @@ class doctorHomeScreen extends StatelessWidget {
                 ),
 
                 ConditionalBuilder(
-                    condition: true, builder: (context) => rowItmes(
+                    condition: model.others!.length>0, builder: (context) => rowItmes(
                   text1: 'Other notes : ',
-                  text2: '... ',
+                  text2:'${model.others}',
                   maxline: 2,
                   overflow: TextOverflow.ellipsis,
                 ), fallback: (context) =>SizedBox() ),

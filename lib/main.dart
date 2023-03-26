@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       providers: [
 
        BlocProvider(create:  (context) => studentLayoutcubit()..getStudentData()),
-        BlocProvider(create:  (context) => doctorLayoutcubit()..getDoctorData()),
+        BlocProvider(create:  (context) => doctorLayoutcubit()..getDoctorData()..getCases()),
         BlocProvider(create:  (context) => supervisorLayoutcubit()..getSupervisorData()..getAllDoctors()),
 
       ],

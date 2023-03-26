@@ -87,6 +87,8 @@ import 'dart:convert';
 
 class caseModel {
   String? uId;
+  String? caseState;
+  String? caseId;
   String? name;
   String? image;
   String? dateTime;
@@ -109,12 +111,12 @@ class caseModel {
   String? images;
   String? camera;
 
-
-
   caseModel({
     this.name,
+    this.caseState,
     this.image,
     this.uId,
+    this.caseId,
     this.dateTime,
     this.patientName,
     this.patientAge,
@@ -133,55 +135,57 @@ class caseModel {
     this.level,
     this.images,
     this.camera,
-
   });
   caseModel.fromjson(Map<String, dynamic> json) {
     uId = json['uId'];
+    caseState = json['caseState'];
+    caseId = json['caseId'];
     name = json['name'];
     image = json['image'];
     dateTime = json['dateTime'];
     patientName = json['patientName'];
     patientAge = json['patientAge'];
     gender = json['gender'];
-    allergies=json['allergies'];
-    currentMedications=json['currentMedications'];
+    allergies = json['allergies'];
+    currentMedications = json['currentMedications'];
     patientAddress = json['patientAddress'];
     patientPhone = json['patientPhone'];
     isDiabetes = json['isDiabetes'];
     isHypertension = json['isHypertension'];
     isCardiac = json['isCardiac'];
-    isAllergies=json['isAllergies'];
+    isAllergies = json['isAllergies'];
     others = json['others'];
     category = json['category'];
     subCategory = json['subCategory'];
     level = json['level'];
     images = json['images'];
     camera = json['camera'];
-
   }
   Map<String, dynamic> tomap() {
     return {
-    'name': name,
-    'image': image,
-    'uId': uId,
-    'dateTime': dateTime,
-    'patientName': patientName,
-    'patientAge': patientAge,
-    'gender': gender,
-    'currentMedications':currentMedications,
-    'patientAddress': patientAddress,
-    'patientPhone': patientPhone,
-    'isDiabetes': isDiabetes,
-    'isHypertension': isHypertension,
-    'isCardiac': isCardiac,
-    'isAllergies':isAllergies,
-    'allergies':allergies,
-    'others': others,
-    'category': category,
-    'subCategory': subCategory,
-    'level': level,
-    'images': images,
-    'camera': camera,
+      'name': name,
+      'image': image,
+      'caseState': caseState,
+      'uId': uId,
+      'caseId': caseId,
+      'dateTime': dateTime,
+      'patientName': patientName,
+      'patientAge': patientAge,
+      'gender': gender,
+      'currentMedications': currentMedications,
+      'patientAddress': patientAddress,
+      'patientPhone': patientPhone,
+      'isDiabetes': isDiabetes,
+      'isHypertension': isHypertension,
+      'isCardiac': isCardiac,
+      'isAllergies': isAllergies,
+      'allergies': allergies,
+      'others': others,
+      'category': category,
+      'subCategory': subCategory,
+      'level': level,
+      'images': images,
+      'camera': camera,
     };
-     }
+  }
 }

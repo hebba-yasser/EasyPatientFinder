@@ -545,7 +545,7 @@ class newPostScreen extends StatelessWidget {
 
                        }else
                        {
-                         doctorLayoutcubit.get(context).uploadPostImage(
+                         doctorLayoutcubit.get(context).uploadCaseImage(
                            dateTime: now.toString(),
                            patientName: patientNameController.text,
                            patientAge: patienPhoneController.text,
@@ -779,6 +779,11 @@ class newPostScreen extends StatelessWidget {
                                 builder: (context) => TextFormField(
                                     controller: allergiesController,
                                     keyboardType: TextInputType.text,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'please enter patient Allergies';
+                                      }
+                                    },
                                     decoration: InputDecoration(
                                       hintText: 'Allergies ',
                                       border: InputBorder.none,

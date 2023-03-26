@@ -72,4 +72,18 @@ class changeAllergiesError extends doctorLayoutstates{}
 class casePostImageCapturedSuccessState extends doctorLayoutstates{}
 class casePostImageCapturedErrorState extends doctorLayoutstates{}
 
-
+// get cases
+ class doctorGetCasesLoadingState extends doctorLayoutstates{}
+ class doctorGetCasesSucessState extends doctorLayoutstates{}
+ class doctorGetCasesErrorState extends doctorLayoutstates{ final String error ;
+ doctorGetCasesErrorState(this.error);}
+// update cases
+class doctorUpdateCasesLoadingState extends doctorLayoutstates{}
+class doctorUpdateCasesSucessState extends doctorLayoutstates{}
+class doctorUpdateCasesErrorState extends doctorLayoutstates{ final String error ;
+doctorUpdateCasesErrorState(this.error);}
+// get clickedcase
+class doctorGetClickedCaseLoadingState extends doctorLayoutstates{}
+class doctorGetClickedCaseSucessState extends doctorLayoutstates{}
+class doctorGetClickedCaseErrorState extends doctorLayoutstates{ final String error ;
+doctorGetClickedCaseErrorState(this.error);}

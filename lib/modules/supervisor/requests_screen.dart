@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project/modules/supervisor/post_screen.dart';
 
 import '../../layout/supervisor/supervisorcubit/cubit.dart';
 import '../../layout/supervisor/supervisorcubit/states.dart';
@@ -94,7 +95,7 @@ class requestScreen extends StatelessWidget {
                                        Text('the case..'),
                                        defaultTextButton(
                                          onpress: () {
-                                           navigateto(context, doctorPostScreen());
+                                           navigateto(context, superPostScreen());
                                          },
                                          text: 'View the case',
                                          size: 12,textalign: TextAlign.center,

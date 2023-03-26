@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project/modules/student/post_screen.dart';
 import '../../../layout/student/studentcubit/cubit.dart';
 import '../../../layout/student/studentcubit/states.dart';
 import '../../shared/components/components.dart';
@@ -117,7 +118,7 @@ class studentRequestScreen extends StatelessWidget {
                        alignment: Alignment.topLeft,
                        child: defaultTextButton(
                          onpress: () {
-                           navigateto(context, doctorPostScreen());
+                           navigateto(context, postScreen());
                          },
                          text:'View the case',
                          textalign: TextAlign.start,
@@ -201,7 +202,7 @@ class studentRequestScreen extends StatelessWidget {
                        alignment: Alignment.topLeft,
                        child: defaultTextButton(
                          onpress: () {
-                           navigateto(context, doctorPostScreen());
+                           navigateto(context, postScreen());
                          },
                          text:'View the case',
                          textalign: TextAlign.start,
@@ -294,7 +295,7 @@ class studentRequestScreen extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     child: defaultTextButton(
                       onpress: () {
-                        navigateto(context, doctorPostScreen());
+                        navigateto(context, postScreen());
                       },
                       text:'View the case',
                       textalign: TextAlign.start,
