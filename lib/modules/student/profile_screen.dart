@@ -281,6 +281,7 @@ class studentProfileScreen extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
+                                  studentLayoutcubit.get(context).getSupervisorsData();
                                   navigateto(context,  editProfileScreen());
                                 },
                                 child: Row(
@@ -297,6 +298,7 @@ class studentProfileScreen extends StatelessWidget {
                                     )),
                                     Spacer(),
                                     IconButton(onPressed: (){
+                                      studentLayoutcubit.get(context).getSupervisorsData();
                                       navigateto(context,  editProfileScreen());
                                     }, icon: Icon(IconBroken.Arrow___Right,color: defaultcol,))
                                   ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'colors.dart';
-
+/*
 ThemeData darktheme=ThemeData(
   primarySwatch:cc.defcol,
   scaffoldBackgroundColor: HexColor('#054e59'),
@@ -40,7 +40,7 @@ ThemeData darktheme=ThemeData(
       fontWeight: FontWeight.w600,
     ),
   ),
-);
+);*/
 ThemeData lighttheme= ThemeData(
   primarySwatch:  cc.defcol,
   scaffoldBackgroundColor: Colors.white,

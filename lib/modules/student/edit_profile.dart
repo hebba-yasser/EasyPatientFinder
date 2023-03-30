@@ -242,6 +242,7 @@ class editProfileScreen extends StatelessWidget {
   }
 }
 */
+/*
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -529,6 +530,392 @@ class editProfileScreen extends StatelessWidget {
                                     child: Text(items),
                                   );
                                 }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}*/
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icon_broken/icon_broken.dart';
+import 'package:project/layout/student/studentcubit/cubit.dart';
+import 'package:project/layout/student/studentcubit/states.dart';
+import 'package:project/shared/components/components.dart';
+
+import '../../layout/student/Layout_screen.dart';
+import '../../shared/styles/colors.dart';
+
+class editProfileScreen extends StatelessWidget {
+  var namecon = TextEditingController();
+  var phonecon = TextEditingController();
+  var emailcon = TextEditingController();
+
+  var supervisorName;
+  var supervisorId;
+  String? selectedSupervisor;
+  var supervisorItemsvalues = [
+    ''
+  ];
+
+ //radwaa
+  var supervisorname;
+  String? selectedsupervisor = null;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<studentLayoutcubit, studentLayoutstates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var userModel = studentLayoutcubit.get(context).studentmodel;
+        var studentProfileImage = studentLayoutcubit.get(context).studentProfileImage;
+        var supervisorModel = studentLayoutcubit.get(context).supervisors;
+        namecon.text = userModel!.name!;
+        phonecon.text = userModel!.phone!;
+        emailcon.text = userModel!.email!;
+        selectedSupervisor=userModel.supervisorName;
+        supervisorItemsvalues = [];
+       supervisorModel.forEach((element) {
+         supervisorItemsvalues!.add( element.name as String);
+        });
+
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: cc.defcol,
+            title: Center(
+              child: Text('Edit profile',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+            ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(IconBroken.Arrow___Left_2, color: Colors.white),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  studentLayoutcubit.get(context).updateStudentData(
+                      name: namecon.text,
+                      phone: phonecon.text,
+                      email: emailcon.text,
+                      supervisorname: supervisorName);
+                  navigate(context, studentLayoutScreen());
+                },
+                icon: Icon(Icons.check, color: Colors.white),
+              )
+            ],
+          ),
+          body: Container(
+            color: defaultcol,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    color: defaultcol,
+                    width: double.infinity,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // SizedBox(height: 70,),
+                          ConditionalBuilder(
+                            condition: userModel?.image != null,
+                            fallback: (context) => Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                CircleAvatar(
+                                  radius: 54.0,
+                                  backgroundColor: Colors.white,
+                                  child: CircleAvatar(
+                                    radius: 50.0,
+                                    backgroundImage: studentProfileImage == null
+                                        ? AssetImage('images/profileimage.jpg')
+                                        : FileImage(studentProfileImage)
+                                            as ImageProvider,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 20.0,
+                                    child: Icon(
+                                      IconBroken.Camera,
+                                      size: 16.0,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    studentLayoutcubit
+                                        .get(context)
+                                        .getStudentImage();
+                                  },
+                                ),
+                              ],
+                            ),
+                            builder: (context) => Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                SizedBox(
+                                  height: 3,
+                                ),
+                                CircleAvatar(
+                                  radius: 54.0,
+                                  backgroundColor: Colors.white,
+                                  child: CircleAvatar(
+                                    radius: 50.0,
+                                    backgroundImage: studentProfileImage == null
+                                        ? NetworkImage(
+                                            '${userModel?.image}',
+                                          )
+                                        : FileImage(studentProfileImage)
+                                            as ImageProvider,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 20.0,
+                                    child: Icon(
+                                      IconBroken.Camera,
+                                      size: 16.0,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    studentLayoutcubit
+                                        .get(context)
+                                        .getStudentImage();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadiusDirectional.only(
+                        topStart: Radius.circular(30),
+                        topEnd: Radius.circular(30),
+                      ),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        if (studentLayoutcubit
+                                                .get(context)
+                                                .studentProfileImage !=
+                                            null)
+                                          defaultbutton(
+                                            onpress: () {
+                                              studentLayoutcubit
+                                                  .get(context)
+                                                  .uploadStudentProfileImage(
+                                                      name: namecon.text,
+                                                      phone: phonecon.text,
+                                                      email: emailcon.text,
+                                                      supervisorname: supervisorName
+
+                                              );
+                                            },
+                                            text: 'upload profile image',
+                                            radius: 30,
+                                          ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        if (state is studentUpdateLoadingState)
+                                          LinearProgressIndicator(),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5.0,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              defaulttextformfield(
+                                controller: namecon,
+                                radius: 30,
+                                keyboardtype: TextInputType.name,
+                                validator: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'name must not be empty';
+                                  }
+                                },
+                                label: 'Name',
+                                prefix: IconBroken.User,
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              defaulttextformfield(
+                                controller: emailcon,
+                                radius: 30,
+                                keyboardtype: TextInputType.text,
+                                validator: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'Email must not be empty';
+                                  }
+                                },
+                                label: 'Email',
+                                prefix: IconBroken.Message,
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              defaulttextformfield(
+                                controller: phonecon,
+                                radius: 30,
+                                keyboardtype: TextInputType.phone,
+                                validator: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'phone number must not be empty';
+                                  }
+                                },
+                                label: 'Phone',
+                                prefix: IconBroken.Call,
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                        /*     StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('users')
+                                      .where('role', isEqualTo: 'Supervisor')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                           List<DropdownMenuItem> supervisorItems = [];
+                                    if (!snapshot.hasData) {
+                                      const CircularProgressIndicator();
+                                    } else {
+                                      final users =
+                                          snapshot.data?.docs.reversed.toList();
+                                      for (var user in users!) {
+                                        supervisorItems.add(
+                                          DropdownMenuItem(
+                                            value: user.get('name'),
+                                            child: Text(user['name']),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                    return
+                                      DropdownButtonFormField(
+                                      decoration: InputDecoration(
+                                        label: Text('choose your supervisor'),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30)),
+                                        ),
+                                      ),
+                                      icon: const Icon(
+                                        IconBroken.Arrow___Down_2,
+                                        color: cc.defcol,
+                                      ),
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'please choose  your supervisor ';
+                                        }
+                                      },
+                                      items: supervisorItems,
+                                      onChanged: (userValue) {
+                                        supervisorname = userValue;
+                                        selectedsupervisor = userModel.supervisorName;
+                                        print(supervisorname);
+                                      },
+                                      value: userModel.supervisorName,
+                                      isExpanded: false,
+                                    );
+                                  }),*/
+
+                              DropdownButtonFormField(
+                                value: userModel.supervisorName,
+                                isExpanded: false,
+                                decoration: InputDecoration(
+                                   label: Text('choose your supervisor'),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)),
+                                  ),
+                                ),
+                                icon: const Icon(
+                                  IconBroken.Arrow___Down_2,
+                                  color: cc.defcol,
+                                ),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'please choose  your supervisor ';
+                                  }
+                                },
+                                onChanged: (String? newValue) {
+                                  supervisorName = newValue;
+                                  selectedSupervisor = userModel.supervisorName;
+                                  print(supervisorName);
+
+                                },
+                                items: supervisorItemsvalues.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(items),
+                                  );}).toList(),
                               ),
                             ],
                           ),

@@ -9,6 +9,7 @@ import 'package:project/shared/styles/colors.dart';
 
 import '../../layout/student/studentcubit/cubit.dart';
 import '../../layout/student/studentcubit/states.dart';
+import '../../models/case_model.dart';
 import '../../shared/components/components.dart';
 import '../../shared/components/constants.dart';
 
@@ -27,251 +28,53 @@ class studentHomeScreen extends StatelessWidget {
       builder: (context, state)
       {
         return
-          Scaffold(
-            appBar: AppBar(
-                title: Text(
-                  'Home',
-                ),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      //  navigateto(context, searchScreen()),
-                    },
-                    icon: Icon(IconBroken.Search),
-                  ),
-                ]),
-            body: SingleChildScrollView(
-             physics: BouncingScrollPhysics(),
-              child: Column(
-                children:
-                [
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) => buildPost(context),
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 8.0,
-                    ),
-                    itemCount: 5,
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-      ]
-              ),
-            ),
+          ConditionalBuilder(
+            condition: studentLayoutcubit.get(context).studentCases.length>0,
+             builder: (context) =>  Scaffold(
+               appBar: AppBar(
+                   title: Text(
+                     'Home',
+                   ),
+                   actions: [
+                     IconButton(
+                       onPressed: () {
+                         //  navigateto(context, searchScreen()),
+                       },
+                       icon: Icon(IconBroken.Search),
+                     ),
+                   ]),
+               body: SingleChildScrollView(
+                 physics: BouncingScrollPhysics(),
+                 child: Column(
+                     children:
+                     [
+                       ListView.separated(
+                         shrinkWrap: true,
+                         physics: NeverScrollableScrollPhysics(),
+                         itemBuilder: (context, index) => studentDefaultbuildPost(
+                           studentLayoutcubit.get(context).studentCases[index],
+                           context,
+                           studentPostScreen(),
+                           studentLayoutcubit.get(context),
+                         ),
+                         separatorBuilder: (context, index) => SizedBox(
+                           height: 8.0,
+                         ),
+                         itemCount: studentLayoutcubit.get(context).studentCases.length,
+                       ),
+                       SizedBox(
+                         height: 8.0,
+                       ),
+                     ]
+                 ),
+               ),
+             ),fallback: (context) => Center(child: CircularProgressIndicator()),
+
           );
 
       },
     );
   }
 
-  Widget buildPost(context)=>InkWell (
-    onTap:() {
-      navigateto(context, postScreen());
-    },
-    child: Card(
 
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      elevation: 5.0,
-      margin: EdgeInsets.symmetric(
-        horizontal: 10.0,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundImage: NetworkImage(
-
-'https://media.istockphoto.com/id/138205019/photo/happy-healthcare-practitioner.jpg?s=612x612&w=0&k=20&c=b8kUyVtmZeW8MeLHcDsJfqqF0XiFBjq6tgBQZC7G0f0=',                ),
-                ),
-                SizedBox(
-                  width: 15.0,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'ahmed mahmoud',
-                        style: TextStyle(
-                          height: 1.4,
-                          fontSize: 15,
-                            fontWeight:  FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text(
-                        'february 20, 2023 at 11:00 pm',
-                        style:
-                        Theme.of(context).textTheme.caption?.copyWith(
-                          height: 1.4,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-              ),
-              child: Container(
-                width: double.infinity,
-                height: 1.0,
-                color: Colors.grey[300],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Medical history:'
-              ,style: TextStyle(color: HexColor('#5394AD'),
-                fontSize: 15),
-            ),
-            ConditionalBuilder(
-                condition: true, builder: (context) =>Text('diabetes') , fallback: (context) =>SizedBox() ),
-            ConditionalBuilder(
-                condition: true, builder: (context) =>Text('cardiac problems') , fallback: (context) =>SizedBox() ),
-            ConditionalBuilder(
-                condition: true, builder: (context) =>Text('hypertension') , fallback: (context) =>SizedBox() ),
-            SizedBox(
-              height: 5,
-            ),
-            ConditionalBuilder(
-                condition: true, builder: (context) => rowItmes(
-              text1: 'List of allergies:   ',
-              text2: 'nfejknvrinavkjnvajnv ajnkj',
-              maxline: 2,
-              overflow: TextOverflow.ellipsis,
-            ), fallback: (context) =>SizedBox() ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              'Diagnosis :'
-              ,style: TextStyle(color: HexColor('#5394AD'),
-                fontSize: 15),
-            ),
-            ConditionalBuilder(
-                condition: true, builder: (context) =>Text('category') , fallback: (context) =>SizedBox() ),
-            ConditionalBuilder(
-                condition: true, builder: (context) =>Text('sub') , fallback: (context) =>SizedBox() ),   rowItmes(
-              text1: 'Current medications: ',
-              text2: 'maefegewagrrearaggle ',
-              maxline: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-
-            SizedBox(
-              height: 7,
-            ),
-
-            ConditionalBuilder(
-                condition: true, builder: (context) => rowItmes(
-              text1: 'Other notes : ',
-              text2: '... ',
-              maxline: 2,
-              overflow: TextOverflow.ellipsis,
-            ), fallback: (context) =>SizedBox() ),
-            SizedBox(
-              height: 7,
-            ),
-            Container(
-              height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  4.0,
-                ),),
-              child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                ),
-                itemCount:  getcount(),
-                itemBuilder: (context, index) {
-
-                  if (_items.length > 4) {
-                    if (index < 3) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(_items[index]),
-                          ),
-                        ),
-                      );
-                    }
-                    if (index == 3) {
-                      return Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Image.network(_items[3], fit: BoxFit.cover),
-                          Positioned.fill(
-                            child: Container(
-                              alignment: Alignment.center,
-                              color: Colors.black54,
-                              child: Text(
-                                '+${(_items.length) - 4}',
-                                style: TextStyle(
-                                    fontSize: 32, color: Colors.white),
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      );
-                    }
-                  }
-                  else{
-                    return Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(_items[index]),
-                        ),
-                      ),
-                    );
-                  }
-                  },
-              ),
-            ),
-
-            SizedBox(
-              height: 10,
-            ),
-            defaultbutton(
-              onpress: () {
-                showtoast(
-                    text: ' conatct information  Requested successfully',
-                    state: toaststates.SUCCESS);
-              },
-              text: 'Request conatct information',
-              radius: 30,
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-  dynamic getcount() {
-    if (_items.length > 4) {
-      return 4;
-    } else {
-      return _items.length;
-    }
-  }
 }

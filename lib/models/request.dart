@@ -1,94 +1,6 @@
-/*
-import 'dart:html';
-
-class caseModel {
-  String? uId;
-  String? name;
-  String? image;
-  String? dateTime;
-  String? patientName;
-  String? patientAge;
-  String? gender;
-  String? patientAddress;
-  String? patientPhone;
-  bool? isDiabetes;
-  bool? isHypertension;
-  bool? isCardiac;
-  bool? isAllergies;
-  String? others;
-  String? category;
-  String? subCategory;
-  String? level;
-  List<File> images = [];
-
-  caseModel({
-    this.name,
-    this.image,
-    this.uId,
-    this.dateTime,
-    this.patientName,
-    this.patientAge,
-    this.gender,
-    this.patientAddress,
-    this.patientPhone,
-    this.isDiabetes,
-    this.isHypertension,
-    this.isCardiac,
-    this.others,
-    this.category,
-    this.subCategory,
-    this.level,
-    required this.images,
-  });
-  caseModel.fromjson(Map<String, dynamic> json) {
-    uId = json['uId'];
-    name = json['name'];
-    image = json['image'];
-    dateTime = json['dateTime'];
-    patientName = json['patientName'];
-    patientAge = json['patientAge'];
-    gender = json['gender'];
-    patientAddress = json['patientAddress'];
-    patientPhone = json['patientPhone'];
-    isDiabetes = json['isDiabetes'];
-    isHypertension = json['isHypertension'];
-    isCardiac = json['isCardiac'];
-    others = json['others'];
-    category = json['category'];
-    subCategory = json['subCategory'];
-    level = json['level'];
-    images = json['images'];
-  }
-  Map<String, dynamic> tomap() {
-    return {
-      'name': name,
-      'image': image,
-      'uId': uId,
-      'dateTime': dateTime,
-      'patientName': patientName,
-      'patientAge': patientAge,
-      'gender': gender,
-      'patientAddress': patientAddress,
-      'patientPhone': patientPhone,
-      'isDiabetes': isDiabetes,
-      'isHypertension': isHypertension,
-      'isCardiac': isCardiac,
-      'others': others,
-      'category': category,
-      'subCategory': subCategory,
-      'level': level,
-      'images': images,
-    };
-  }
-}
-*/
-import 'dart:convert';
-// import 'dart:html';
-
-class caseModel {
+class request {
   String? uId;
   String? caseState;
-  String? caseId;
   String? name;
   String? image;
   String? dateTime;
@@ -107,16 +19,21 @@ class caseModel {
   String? subCategory;
   String? level;
   String? allergies;
-  List<String>? images;
-  // String? images;
+  // List<File> images=[];
+  String? images;
   String? camera;
+  String? requeststatus;
+  String? supervisorid;
+  String? studentid;
+  String? caseid;
+  String? requestid;
 
-  caseModel({
+  request({
+    this.requestid,
     this.name,
     this.caseState,
     this.image,
     this.uId,
-    this.caseId,
     this.dateTime,
     this.patientName,
     this.patientAge,
@@ -133,14 +50,18 @@ class caseModel {
     this.category,
     this.subCategory,
     this.level,
-    required this.images,
+    this.images,
     this.camera,
+    this.requeststatus,
+    this.supervisorid,
+    this.studentid,
+    this.caseid,
   });
-  caseModel.fromjson(Map<String, dynamic> json) {
+  request.fromjson(Map<String, dynamic> json) {
+    requestid=json['requestid'];
     uId = json['uId'];
     caseState = json['caseState'];
-    caseId = json['caseId'];
-    name = json['name'];
+     name = json['name'];
     image = json['image'];
     dateTime = json['dateTime'];
     patientName = json['patientName'];
@@ -160,14 +81,18 @@ class caseModel {
     level = json['level'];
     images = json['images'];
     camera = json['camera'];
+    requeststatus = json['requeststatus'];
+    supervisorid = json['supervisorid'];
+    studentid = json['studentId'];
+    caseid = json['caseid'];
   }
   Map<String, dynamic> tomap() {
     return {
+      'requestid' :requestid,
       'name': name,
       'image': image,
       'caseState': caseState,
       'uId': uId,
-      'caseId': caseId,
       'dateTime': dateTime,
       'patientName': patientName,
       'patientAge': patientAge,
@@ -186,6 +111,10 @@ class caseModel {
       'level': level,
       'images': images,
       'camera': camera,
+      'requeststatus': requeststatus,
+      'studentid': studentid,
+      'supervisorid': supervisorid,
+      'caseid': caseid,
     };
   }
 }

@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+/*import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,6 +35,8 @@ class registercubit extends Cubit<registerstates>{
               role: role,
               studentId: studentId,
               uId: value.user!.uid,
+            supername: '',
+            superid: '',
                 );
 
 
@@ -52,6 +54,8 @@ class registercubit extends Cubit<registerstates>{
     required  String uId,
      String? studentId,
      String? image,
+    required  String superid,
+    required  String supername,
 }){   userModel model = userModel(
       studentId: studentId,
       email: email,
@@ -60,6 +64,8 @@ class registercubit extends Cubit<registerstates>{
     phone: phone,
     role: role,
     uId: uId,
+    superid: superid,
+    supername: supername,
   );
     FirebaseFirestore.instance
         .collection('users')
@@ -70,6 +76,101 @@ class registercubit extends Cubit<registerstates>{
     })
         .catchError((onError){
       emit(createUserErrorState(onError));
+  });
+  }
+
+
+
+  IconData suffix =IconBroken.Show;
+  bool hidepass =true;
+  void changepassvisibility(){
+    hidepass=!hidepass;
+    suffix=hidepass?IconBroken.Show :IconBroken.Hide;
+    emit(registerChagePassvisibilitystate());
+
+  }
+
+}*/
+import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icon_broken/icon_broken.dart';
+import 'package:project/models/user_model.dart';
+import 'registerstates.dart';
+
+
+class registercubit extends Cubit<registerstates>{
+  registercubit() : super (registerIntialState());
+  static registercubit get(context)=> BlocProvider.of(context);
+  void userRegister({
+    required String name,
+    required String email,
+    required String password,
+    required String phone,
+    String? studentId,
+    required String role,
+    required String supervisorName
+  })
+  {
+    emit(registerLoadingState());
+
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
+        .then((value) {
+      createUser(
+          name: name,
+          email: email,
+          phone: phone,
+          role: role,
+          studentId: studentId,
+          uId: value.user!.uid,
+          supervisorName: supervisorName,
+          supervisorId: ''
+      );
+
+
+    }).catchError((error) {
+      emit(registerErrorState(error) );
+      print(error.toString());
+    });}
+
+  void createUser(
+      {
+        required String name,
+        required String email,
+        required String phone,
+        required  String role,
+        required  String uId,
+        required String supervisorName,
+        required String supervisorId,
+        String? studentId,
+        String? image,
+      }){   userModel model = userModel(
+      studentId: studentId,
+      email: email,
+      image: image,
+      name: name,
+      phone: phone,
+      role: role,
+      uId: uId,
+      supervisorName: supervisorName,
+      supervisorId: supervisorId
+  );
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(uId)
+      .set(model.tomap())
+      .then((value){
+    emit(createUserSucessState());
+  })
+      .catchError((onError){
+    emit(createUserErrorState(onError));
   });
   }
 
@@ -126,6 +227,6 @@ class registercubit extends Cubit<registerstates>{
     suffix=hidepass?IconBroken.Show :IconBroken.Hide;
     emit(registerChagePassvisibilitystate());
 
-  }
+     }
 
 }

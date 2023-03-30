@@ -170,6 +170,10 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
 
 // get function
   void changebottomdoctor(int index) {
+
+if(index==2){
+  getDoctorData();
+}
     currentIndex = index;
     emit(changeBottomNavstate());
   }
@@ -178,6 +182,7 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
 
   void getDoctorData() {
     emit(doctorGetuserLoadingState());
+    doctormodel==null;
     FirebaseFirestore.instance.collection('users').doc(UID).get().then((value) {
       print(value.data());
       doctormodel = userModel.fromjson(value.data()!);
@@ -298,7 +303,7 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
     );
   }
 
-  //new post function
+  /*//new post function
   File? postImage;
   var picker1 = ImagePicker();
   Future<void> getPostImage() async{
@@ -314,8 +319,33 @@ class doctorLayoutcubit extends Cubit<doctorLayoutstates> {
       emit(casePostImagePickedErrorState());
     }
   }
-
-
+*/
+  List<File> postImage = [];
+  // File? myImage;
+  final ImagePicker picker1=ImagePicker();
+  List<String> paths=[];
+  Future<void> getPostImage() async{
+    final List<XFile>? pickedFile=await picker1.pickMultiImage();
+    if(pickedFile!.isNotEmpty || pickedFile !=null)
+    {
+      paths = pickedFile.map((file) {
+        return file.path;
+      }).toList();
+      print('hereeeeee');
+      print(paths);
+      //pickedFile[0]!.path
+      pickedFile.forEach((file) {
+        postImage.add(File(file.path));
+      });
+      //postImage=File(pickedFile[0]!.path);
+      emit(casePostImagePickedSuccessState());
+    }
+    else
+    {
+      print('No Image Selected!');
+      emit(casePostImagePickedErrorState());
+    }
+    }
 late String globalcaseid;
   void uploadCaseImage({
     // required String uId,
@@ -339,40 +369,49 @@ late String globalcaseid;
     required String level,
   }){
     emit(doctorNewPostLoadingState());
-    firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('cases/${Uri.file(postImage!.path).pathSegments.last}')
-        .putFile(postImage!)
-        .then((value1) {
-      value1.ref.getDownloadURL().then((value) {
-        print(value);
-        createCase(
-            dateTime: dateTime,
-            patientName: patientName,
-            patientAge: patientAge,
-            gender: gender,
-            patientAddress: patientAddress,
-            patientPhone: patientPhone,
-            currentMedications: currentMedications,
-            isHypertension:isHypertension ,
-            isDiabetes:isDiabetes ,
-            isCardiac: isCardiac,
-            isAllergies:isAllergies ,
-            allergies: allergies,
-            others:others,
-            category: category,
-            subCategory: subCategory,
-            level: level,
-            images: value,
-            caseId :'',
-            caseState:'WAITING',
-           );
+    List<String> filesUrls = [];
+    for(int i=0; i< paths.length; i++) {
+
+      firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('cases/${
+          Uri
+              .file(paths[i])
+              .pathSegments
+              .last}')
+          .putFile(postImage[i])
+          .then((value1) {
+        value1.ref.getDownloadURL().then((value) {
+          print(value);
+          filesUrls.add(value);
+        }).catchError((error) {
+          emit(doctorNewPostErrorState(error));
+        });
       }).catchError((error) {
         emit(doctorNewPostErrorState(error));
       });
-    }).catchError((error) {
-      emit(doctorNewPostErrorState(error));
-    });
+    };
+    createCase(
+      dateTime: dateTime,
+      patientName: patientName,
+      patientAge: patientAge,
+      gender: gender,
+      patientAddress: patientAddress,
+      patientPhone: patientPhone,
+      currentMedications: currentMedications,
+      isHypertension: isHypertension,
+      isDiabetes: isDiabetes,
+      isCardiac: isCardiac,
+      isAllergies: isAllergies,
+      allergies: allergies,
+      others: others,
+      category: category,
+      subCategory: subCategory,
+      level: level,
+      images: filesUrls,
+      caseId: '',
+      caseState: 'WAITING',
+    );
   }
 
   void createCase({
@@ -395,8 +434,9 @@ late String globalcaseid;
     required String category,
     required String subCategory,
     required String level,
-    required String images,
-  required String caseId, required String caseState,
+    required List<String> images,
+  required String caseId,
+    required String caseState,
   }) {
     caseModel model = caseModel(
       uId: doctormodel?.uId,
@@ -418,7 +458,7 @@ late String globalcaseid;
       category: category,
       subCategory: subCategory,
       level: level,
-      images: images??'',
+      images: images??[],
       caseId: caseId,
         caseState:caseState,
 
@@ -478,62 +518,31 @@ late String globalcaseid;
     emit(changeAllergiesSuccess());
     return isAllergies;
     }
-  List<caseModel> cases = [];
+  List<caseModel> doctorCases = [];
 
-  void getCases()
+  void docotrGetCases()
   {
     FirebaseFirestore.instance
         .collection('cases')
-        .get()
-        .then((value)
-    {
-      value.docs.forEach((element)
-      {
-        cases.add(caseModel.fromjson(element.data()));
-      });
-
+        .orderBy('dateTime')
+        .snapshots().listen((event) {
+          doctorCases=[];
+          event.docs.forEach((element) {
+            doctorCases.add(caseModel.fromjson(element.data()));
+          });
       emit(doctorGetCasesSucessState());
-    })
-        .catchError((error){
-      emit(doctorGetCasesErrorState(error.toString()));
-    });
-  }
-  caseModel? clickcase ;
-  void getCase( String uidpost) {
+    });}
+  caseModel? doctorClickcase ;
+  void doctorGetCase( String uidpost) {
     emit(doctorGetuserLoadingState());
     FirebaseFirestore.instance.collection('cases').doc(uidpost).get().then((value) {
       print(value.data());
-      clickcase = caseModel.fromjson(value.data()!);
+      doctorClickcase = caseModel.fromjson(value.data()!);
       emit(doctorGetClickedCaseSucessState());
     }).catchError((error) {
       print(error.toString());
       emit(doctorGetClickedCaseErrorState(error.toString()));
     });
   }
-  }
+}
 
-
-
-
-/*
-  void createNewPost({
-    required String uId,
-    required String name,
-    required String image,
-    required String dateTime,
-    required String patientName,
-    required String patientAge,
-    required String gender,
-    required String patientAddress,
-    required String patientPhone,
-    bool? isDiabetes,
-    bool? isHypertension,
-    bool? isCardiac,
-    bool? isAllergies,
-    String? others,
-    required String category,
-    required String subCategory,
-    required String level,
-  }) {
-    emit(doctorNewPostLoadingState());
-  }*/

@@ -34,14 +34,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
 
-       BlocProvider(create:  (context) => studentLayoutcubit()..getStudentData()),
-        BlocProvider(create:  (context) => doctorLayoutcubit()..getDoctorData()..getCases()),
-        BlocProvider(create:  (context) => supervisorLayoutcubit()..getSupervisorData()..getAllDoctors()),
+       BlocProvider(create:  (context) => studentLayoutcubit()..getStudentData()..studentGetCases()..getRequestedCases()),
+        BlocProvider(create:  (context) => doctorLayoutcubit()..getDoctorData()..docotrGetCases()),
+        BlocProvider(create:  (context) => supervisorLayoutcubit()..getSupervisorData()..supervisorGetCases()
+          ..getAllDoctors()..getRequestedCases()
+        ),
 
       ],
       child: MaterialApp(
          theme: lighttheme, // lightmode
-         darkTheme: darktheme, //darkmode
+         //darkTheme: darktheme, //darkmode
          themeMode:ThemeMode. light,
          debugShowCheckedModeBanner: false,
           home:splashScreen(),

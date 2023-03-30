@@ -468,7 +468,7 @@ class newPostScreen extends StatelessWidget {
   var items = [
     'complete denture',
     'partial denture',
-    ' overdenture',
+    'overdenture',
     'single denture',
     'maxillofacial case',
     'full mouth rehabilitation',
@@ -589,10 +589,28 @@ class newPostScreen extends StatelessWidget {
                     ),
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 25.0,
-                        backgroundImage: NetworkImage('${userModel?.image}'),
-                      ),
+                      ConditionalBuilder(
+                        condition: userModel?. image!=null ,
+                        builder: (context) => Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 25.0,
+                              backgroundImage: NetworkImage(
+                                '${userModel?.image}',
+                              ),
+
+                            ),
+                          ],
+                        ),
+                        fallback: (context) => Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 25.0,
+                              backgroundImage: AssetImage('images/profileimage.jpg'),
+                            ),
+
+                          ],
+                        ), ),
                       SizedBox(
                         width: 15.0,
                       ),
@@ -888,60 +906,60 @@ class newPostScreen extends StatelessWidget {
                               height: 20.0,
                             ),
                             if(postimage != null)
-                              Container(
-                                height: 300,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                    4.0,
-                                  ),
-                                  image: DecorationImage(image: FileImage(postimage!), fit: BoxFit.cover,
-                                  ),
-                                ),
-
-                                /*   child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5,
-                        ),
-                        itemCount: getcount(),
-                        itemBuilder: (context, index) {
-                          if (index < 3) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: FileImage( postimage!) as ImageProvider,
-                                ),
-                              ),);
-                          }
-                          if (index == 3) {
-                            return Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Image.network(_items[3], fit: BoxFit.cover),
-                                Positioned.fill(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    color: Colors.black54,
-                                    child: Text(
-                                      '+${(_items.length) - 4}',
-                                      style: TextStyle(
-                                          fontSize: 32,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                        },
-                      ),*/
-                              ),
+                      //         ontainer(
+                      //           height: 300,
+                      //           width: double.infinity,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(
+                      //               4.0,
+                      //             ),
+                      //             image: DecorationImage(image: FileImage(postimage!), fit: BoxFit.cover,
+                      //             ),
+                      //           ),
+                      //
+                      //           /*   child: GridView.builder(
+                      //   physics: NeverScrollableScrollPhysics(),
+                      //   shrinkWrap: true,
+                      //   gridDelegate:
+                      //   SliverGridDelegateWithFixedCrossAxisCount(
+                      //     crossAxisCount: 2,
+                      //     crossAxisSpacing: 5,
+                      //     mainAxisSpacing: 5,
+                      //   ),
+                      //   itemCount: getcount(),
+                      //   itemBuilder: (context, index) {
+                      //     if (index < 3) {
+                      //       return Container(
+                      //         decoration: BoxDecoration(
+                      //           image: DecorationImage(
+                      //             fit: BoxFit.cover,
+                      //             image: FileImage( postimage!) as ImageProvider,
+                      //           ),
+                      //         ),);
+                      //     }
+                      //     if (index == 3) {
+                      //       return Stack(
+                      //         fit: StackFit.expand,
+                      //         children: [
+                      //           Image.network(_items[3], fit: BoxFit.cover),
+                      //           Positioned.fill(
+                      //             child: Container(
+                      //               alignment: Alignment.center,
+                      //               color: Colors.black54,
+                      //               child: Text(
+                      //                 '+${(_items.length) - 4}',
+                      //                 style: TextStyle(
+                      //                     fontSize: 32,
+                      //                     color: Colors.white),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       );
+                      //     }
+                      //   },
+                      // ),*/
+                      //         ),C
                             SizedBox(
                               height: 10.0,
                             ),
@@ -1014,3 +1032,26 @@ class newPostScreen extends StatelessWidget {
     }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

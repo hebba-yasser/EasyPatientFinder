@@ -1,46 +1,89 @@
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project/models/case_model.dart';
+import 'package:project/models/request_id.dart';
+import 'package:project/models/user_model.dart';
 import 'package:project/modules/supervisor/post_screen.dart';
 
 import '../../layout/supervisor/supervisorcubit/cubit.dart';
 import '../../layout/supervisor/supervisorcubit/states.dart';
+import '../../models/request.dart';
 import '../../shared/components/components.dart';
+import '../../shared/styles/colors.dart';
 import '../doctor/post_screen.dart';
 
 class requestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => supervisorLayoutcubit(),
-      child: BlocConsumer<supervisorLayoutcubit, supervisorLayoutstates>(
-        listener: (context, state) {},
+    return
+
+        BlocConsumer<supervisorLayoutcubit, supervisorLayoutstates>(
+        listener: (context, state) {
+        },
         builder: (context, state)
         {
+         var cubitcase = supervisorLayoutcubit.get(context).requestedCases;
+         var cubitstudent = supervisorLayoutcubit.get(context).studentRequestedCases;
 
-                 return Scaffold(
-                   appBar: AppBar(
-                       title: Text(
-                         'Requests List',
-                       ),),
-                   body: ListView.separated(
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) => buildRequestItem(context),
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: 8.0,
-                        ),
-                        itemCount: 5,
+
+         return ConditionalBuilder(
+                  condition: cubitcase.length >0,
+                  builder:(context) => Scaffold(
+
+                    appBar: AppBar(
+                      title: Text(
+                        'Requests List',
+                      ),),
+                    body: ListView.separated(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) => buildRequestItem(cubitstudent [index],cubitcase[index],context),
+                      separatorBuilder: (context, index) => SizedBox(
+                        height: 8.0,
                       ),
-                 );
+                      itemCount:cubitcase.length,
+                    ),
+                  ) ,
+                  fallback:  (context) => Scaffold(
+                    appBar: AppBar(
+                      title: Text(
+                        'Requests List',
+                      ),),
+                    body: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(18.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('images/nodataavailable.gif'),
+                            //  width: 250,
+                            //    height: 250,
+                          ),
+                          Text(
+                            'Sorry We Can\'t Find Any Data ',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: defaultcol,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
+                );
 
         },
-      ),
-    );
+      );
+
   }
-   Widget buildRequestItem(context){
+   Widget buildRequestItem(userModel model,request modelcase,context){
      return  Padding(
          padding: const EdgeInsets.all(10.0),
          child: Column(
@@ -57,12 +100,29 @@ class requestScreen extends StatelessWidget {
                    children: [
                      Row(
                        children: [
-                         CircleAvatar(
-                           radius: 35.0,
-                           backgroundImage: NetworkImage(
-                             'https://media.istockphoto.com/id/138205019/photo/happy-healthcare-practitioner.jpg?s=612x612&w=0&k=20&c=b8kUyVtmZeW8MeLHcDsJfqqF0XiFBjq6tgBQZC7G0f0=',
+                 ConditionalBuilder(
+                           condition: model?.image!=null ,
+                           builder: (context) => Stack(
+                             children: [
+                               CircleAvatar(
+                                 radius: 35.0,
+                                 backgroundImage: NetworkImage(
+                                   '${model?.image}',
+                                 ),
+
+                               ),
+                             ],
                            ),
-                         ),
+                           fallback: (context) => Stack(
+                             children: [
+                               CircleAvatar(
+                                 radius: 35.0,
+                                 backgroundImage: AssetImage('images/profileimage.jpg'),
+                               ),
+
+                             ],
+                           ), ),
+
                          SizedBox(
                            width: 10.0,
                          ),
@@ -75,7 +135,7 @@ class requestScreen extends StatelessWidget {
                                    height: 5,
                                  ),
                                  Text(
-                                   'ahmed mahmoud',
+                                   '${model.name}',
                                    style: TextStyle(
                                      height: 1.4,
                                      fontSize: 15,
@@ -95,6 +155,7 @@ class requestScreen extends StatelessWidget {
                                        Text('the case..'),
                                        defaultTextButton(
                                          onpress: () {
+                                           supervisorLayoutcubit.get(context).supervisorGetCase(modelcase.caseid as String);
                                            navigateto(context, superPostScreen());
                                          },
                                          text: 'View the case',
@@ -111,7 +172,36 @@ class requestScreen extends StatelessWidget {
                                    children: [
                                      Expanded(
                                        child: defaultbutton(
-                                         onpress: () {},
+                                         onpress: () {
+                                           supervisorLayoutcubit.get(context).updateRequest(
+                                             requeststatus: 'accept',
+                                             supervisorid: modelcase.supervisorid! as String,
+                                             studentid: model!.uId as String,
+                                             requestid: modelcase!.requestid as String,
+                                             uId: modelcase!.uId as String,
+                                             name: modelcase!.name as String,
+                                             image:  modelcase!.image != null ? modelcase!.image as String :'' ,
+                                             caseid: modelcase.caseid as String,
+                                             patientAge: modelcase!.patientAge as String,
+                                             patientName: modelcase!.patientName as String,
+                                             patientPhone: modelcase!.patientPhone as String,
+                                             gender: modelcase!.gender as String,
+                                             caseState: modelcase!.caseState as String,
+                                             category: modelcase!.category as String,
+                                             currentMedications: modelcase!.currentMedications as String,
+                                             dateTime: modelcase!.dateTime as String,
+                                             level: modelcase!.level as String,
+                                             patientAddress: modelcase!.patientAddress as String,
+                                             others: modelcase!.others as String,
+                                             images: modelcase!.images as String,
+                                             subCategory: modelcase!.subCategory as String,
+                                             allergies: modelcase!.allergies as String,
+                                             isHypertension: modelcase!.isHypertension,
+                                             isAllergies: modelcase!.isAllergies,
+                                             isCardiac: modelcase!.isCardiac,
+                                             isDiabetes: modelcase!.isDiabetes,
+                                           );
+                                         },
                                          text: 'Accept',
                                          textalign: TextAlign.center,
                                          radius: 30,
@@ -123,7 +213,36 @@ class requestScreen extends StatelessWidget {
                                      ),
                                      Expanded(
                                        child: defaultbutton(
-                                         onpress: () {},
+                                         onpress: () {
+                                           supervisorLayoutcubit.get(context).updateRequest(
+                                             requeststatus: 'ignore',
+                                             supervisorid: modelcase.supervisorid! as String,
+                                             studentid: model!.uId as String,
+                                             requestid: modelcase!.requestid as String,
+                                             uId: modelcase!.uId as String,
+                                             name: modelcase!.name as String,
+                                             image:  modelcase!.image != null ? modelcase!.image as String :'' ,
+                                             caseid: modelcase.caseid as String,
+                                             patientAge: modelcase!.patientAge as String,
+                                             patientName: modelcase!.patientName as String,
+                                             patientPhone: modelcase!.patientPhone as String,
+                                             gender: modelcase!.gender as String,
+                                             caseState: modelcase!.caseState as String,
+                                             category: modelcase!.category as String,
+                                             currentMedications: modelcase!.currentMedications as String,
+                                             dateTime: modelcase!.dateTime as String,
+                                             level: modelcase!.level as String,
+                                             patientAddress: modelcase!.patientAddress as String,
+                                             others: modelcase!.others as String,
+                                             images: modelcase!.images as String,
+                                             subCategory: modelcase!.subCategory as String,
+                                             allergies: modelcase!.allergies as String,
+                                             isHypertension: modelcase!.isHypertension,
+                                             isAllergies: modelcase!.isAllergies,
+                                             isCardiac: modelcase!.isCardiac,
+                                             isDiabetes: modelcase!.isDiabetes,
+                                           );
+                                         },
                                          text: 'Ignore',
                                          textalign: TextAlign.center,
                                          radius: 30,

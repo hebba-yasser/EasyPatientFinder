@@ -185,6 +185,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:icon_broken/icon_broken.dart';
+import 'package:project/layout/student/studentcubit/cubit.dart';
+import 'package:project/modules/supervisor/students_list.dart';
 
 import '../../layout/supervisor/supervisorcubit/cubit.dart';
 import '../../layout/supervisor/supervisorcubit/states.dart';
@@ -301,6 +303,31 @@ class supervisorProfileScreen extends StatelessWidget {
                                     IconButton(onPressed: (){
                                       navigateto(context,  supervisorEditProfileScreen());
 
+                                    }, icon: Icon(IconBroken.Arrow___Right,color: defaultcol,))
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                supervisorLayoutcubit.get(context) . getSupervisorStudents();
+                                  navigateto(context, studentsScreen());
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: cc.defcol,
+                                      child: Icon(IconBroken.User1,
+                                          color: Colors.white),
+                                    ),
+                                    SizedBox(width: 8,),
+                                    Text('student list',style: TextStyle(
+                                      fontSize: 19,color:  HexColor('#87b4c6'),
+                                    )),
+                                    Spacer(),
+                                    IconButton(onPressed: (){
+                                      supervisorLayoutcubit.get(context) . getSupervisorStudents();
+                                      navigateto(context, studentsScreen());
                                     }, icon: Icon(IconBroken.Arrow___Right,color: defaultcol,))
                                   ],
                                 ),

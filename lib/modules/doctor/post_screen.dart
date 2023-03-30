@@ -23,10 +23,10 @@ class doctorPostScreen extends StatelessWidget {
     return BlocConsumer<doctorLayoutcubit, doctorLayoutstates>(
         listener: (context, state) {},
         builder: (context, state) {
-          var model = doctorLayoutcubit.get(context).clickcase;
+          var model = doctorLayoutcubit.get(context).doctorClickcase;
 
           return ConditionalBuilder(
-            condition: doctorLayoutcubit.get(context).clickcase != null,
+            condition: doctorLayoutcubit.get(context).doctorClickcase != null,
             builder: (context) => Scaffold(
               appBar: defaultAppBar(
                 context: context,
@@ -42,10 +42,28 @@ class doctorPostScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            backgroundImage: NetworkImage('${model?.image}'),
-                          ),
+                          ConditionalBuilder(
+                            condition: model?. image!=null ,
+                            builder: (context) => Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25.0,
+                                  backgroundImage: NetworkImage(
+                                    '${model?.image}',
+                                  ),
+
+                                ),
+                              ],
+                            ),
+                            fallback: (context) => Stack(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25.0,
+                                  backgroundImage: AssetImage('images/profileimage.jpg'),
+                                ),
+
+                              ],
+                            ), ),
                           SizedBox(
                             width: 15.0,
                           ),
@@ -167,7 +185,7 @@ class doctorPostScreen extends StatelessWidget {
                                   builder: (context) => Text( '${model?.category}' ),
                                   fallback: (context) => SizedBox()),
                               ConditionalBuilder(
-                                  condition: model!.subCategory!.length!>0,
+                                  condition: model.subCategory!.length>0 && model.subCategory !='none',
                                   builder: (context) => Text( '${model?.subCategory}' ),
                                   fallback: (context) => SizedBox()),
                               rowItmes(

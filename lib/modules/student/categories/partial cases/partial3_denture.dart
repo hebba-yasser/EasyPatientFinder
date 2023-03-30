@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../layout/student/studentcubit/cubit.dart';
-import '../../../layout/student/studentcubit/states.dart';
-import '../../../shared/components/components.dart';
-import '../../../shared/styles/colors.dart';
-import '../post_screen.dart';
+import '../../../../layout/student/studentcubit/cubit.dart';
+import '../../../../layout/student/studentcubit/states.dart';
+import '../../../../shared/components/components.dart';
+import '../../../../shared/styles/colors.dart';
+import '../../post_screen.dart';
 
 
-class singlrdentureScreen extends StatelessWidget {
+class partial3Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<studentLayoutcubit, studentLayoutstates>(
@@ -19,11 +19,11 @@ class singlrdentureScreen extends StatelessWidget {
       {
         return ConditionalBuilder(
           //if level =post &   studentLayoutcubit.get(context).studentCases.length>0,
-          condition: studentLayoutcubit.get(context).singleCases.length > 0,
+          condition: studentLayoutcubit.get(context).partialCases3.length > 0,
           builder: (context) => Scaffold(
             appBar: defaultAppBar(
               context: context,
-              title: 'Single Denture Cases',
+              title: 'kennedy ||| Cases',
             ),
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -32,7 +32,7 @@ class singlrdentureScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => studentDefaultbuildPost(
-                    studentLayoutcubit.get(context).singleCases[index],
+                    studentLayoutcubit.get(context).partialCases3[index],
                     context,
                     studentPostScreen(),
                     studentLayoutcubit.get(context),
@@ -40,7 +40,7 @@ class singlrdentureScreen extends StatelessWidget {
                   separatorBuilder: (context, index) => SizedBox(
                     height: 8.0,
                   ),
-                  itemCount: studentLayoutcubit.get(context).singleCases.length,
+                  itemCount: studentLayoutcubit.get(context).partialCases3.length,
                 ),
                 SizedBox(
                   height: 8.0,
@@ -51,7 +51,7 @@ class singlrdentureScreen extends StatelessWidget {
           fallback: (context) => Scaffold(
             appBar: defaultAppBar(
               context: context,
-              title: 'Single Denture Cases',
+              title: 'kennedy ||| Cases',
             ),
             body: Container(
               width: double.infinity,

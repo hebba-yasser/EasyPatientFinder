@@ -8,6 +8,7 @@ import 'package:project/modules/supervisor/posts_perDoctor_screen.dart';
 import '../../layout/supervisor/supervisorcubit/cubit.dart';
 import '../../layout/supervisor/supervisorcubit/states.dart';
 import '../../shared/components/components.dart';
+import '../../shared/styles/colors.dart';
 import '../doctor/post_screen.dart';
 
 class doctorsScreen extends StatelessWidget {
@@ -31,13 +32,41 @@ class doctorsScreen extends StatelessWidget {
               builder: (context) =>  ListView.separated(
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) => buildRequestItem(cubit[index],context),
+                itemBuilder: (context, index) => buildItem(cubit[index],context),
                 separatorBuilder: (context, index) => SizedBox(
                   height: 8.0,
                 ),
                 itemCount: cubit.length,
               ),
-              fallback:(context) => Center(child: CircularProgressIndicator()),
+              fallback:(context) => Scaffold(
+                appBar: defaultAppBar(
+                  context: context,
+                  title:   'Doctors List',
+                ),
+                body: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(18.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(
+                        image: AssetImage('images/nodataavailable.gif'),
+                        //  width: 250,
+                        //    height: 250,
+                      ),
+                      Text(
+                        'Sorry We Can\'t Find Any Data ',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: defaultcol,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
             ),
           );
@@ -46,7 +75,7 @@ class doctorsScreen extends StatelessWidget {
         },
       );
   }
-  Widget buildRequestItem(userModel modell ,context){
+  Widget buildItem(userModel modell ,context){
     return  Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
@@ -63,10 +92,28 @@ class doctorsScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 35.0,
-                        backgroundImage: NetworkImage('${modell.image}'  ),
-                      ),
+                      ConditionalBuilder(
+                        condition: modell?. image!=null ,
+                        builder: (context) => Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 35.0,
+                              backgroundImage: NetworkImage(
+                                '${modell?.image}',
+                              ),
+
+                            ),
+                          ],
+                        ),
+                        fallback: (context) => Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 35.0,
+                              backgroundImage: AssetImage('images/profileimage.jpg'),
+                            ),
+
+                          ],
+                        ), ),
                       SizedBox(
                         width: 10.0,
                       ),
@@ -88,6 +135,7 @@ class doctorsScreen extends StatelessWidget {
                               ),
                                     defaultTextButton(
                                       onpress: () {
+                                        supervisorLayoutcubit.get(context).supervisorGetCasesPerDoctor(modell!.uId as String);
                                         navigateto(context, postPerDoctorScreen());
                                       },
                                       text: 'View the cases',
