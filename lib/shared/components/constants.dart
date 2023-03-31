@@ -4,6 +4,7 @@ import 'package:project/shared/network/local/cache_helper.dart';
 import '../../modules/loginscreen/loginScreen.dart';
 dynamic UID;
 dynamic ROLE ;
+String LEVEL='';
 void logout(context){
   cacheHelper.removedata(key: 'uId').then((value1) {
    if(value1==true){
